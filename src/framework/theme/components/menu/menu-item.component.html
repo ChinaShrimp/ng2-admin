@@ -1,9 +1,8 @@
-<span *ngIf="menuItem.group" class="menu-group">
+<span *ngIf="menuItem.group">
   <i class="{{ menuItem.icon }}" *ngIf="menuItem.icon"></i>
   {{ menuItem.title }}
 </span>
 <a *ngIf="menuItem.link && !menuItem.url && !menuItem.children && !menuItem.group"
-        [class.active]="menuItem.selected"
         [routerLink]="menuItem.link"
         [attr.target]="menuItem.target"
         [attr.title]="menuItem.title"
@@ -13,7 +12,6 @@
   <span>{{ menuItem.title }}</span>
 </a>
 <a *ngIf="menuItem.url && !menuItem.children && !menuItem.link && !menuItem.group"
-        [class.active]="menuItem.selected"
         [attr.href]="menuItem.url"
         [attr.target]="menuItem.target"
         [attr.title]="menuItem.title"
@@ -23,7 +21,6 @@
   <span>{{ menuItem.title }}</span>
 </a>
 <a *ngIf="!menuItem.children && !menuItem.link && !menuItem.url && !menuItem.group"
-   [class.active]="menuItem.selected"
    [attr.target]="menuItem.target"
    [attr.title]="menuItem.title"
    (mouseenter)="onHoverItem(menuItem)"
@@ -32,7 +29,6 @@
   <span>{{ menuItem.title }}</span>
 </a>
 <a *ngIf="menuItem.children"
-   [class.active]="menuItem.selected"
    (click)="$event.preventDefault();onToggleSubMenu(menuItem)"
    [attr.target]="menuItem.target"
    [attr.title]="menuItem.title"
@@ -44,14 +40,16 @@
                  [class.ion-chevron-up]="menuItem.expanded"></i>
 </a>
 <ul *ngIf="menuItem.children"
-    [class.menu-collapsed]="!(menuItem.children && menuItem.expanded)"
-    [class.menu-expanded]="menuItem.expanded">
+    [class.collapsed]="!(menuItem.children && menuItem.expanded)"
+    [class.expanded]="menuItem.expanded"
+    class="menu-items">
   <li ngaMenuItem *ngFor="let item of menuItem.children"
                   [menuItem]="item"
-                  [class.expanded]="item.expanded"
-                  [class.collapsed]="!item.expanded"
+                  [class.menu-group]="item.group"
+                  [class.active]="item.selected"
                   (hoverItem)="onHoverItem($event)"
                   (toggleSubMenu)="onToggleSubMenu($event)"
                   (selectItem)="onSelectItem($event)"
-                  (itemClick)="onItemClick($event)"></li>
+                  (itemClick)="onItemClick($event)"
+                  class="menu-item"></li>
 </ul>
